@@ -25,13 +25,6 @@ export default function CategoryDetailLoading({ category }) {
             {category.description}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" marginTop="20px">
-          <Avatar src={category.image} />
-          <Box marginLeft="16px">
-            <Typography>{category.creator.name}</Typography>
-            <Typography>{category.createdAt}</Typography>
-          </Box>
-        </Box>
       </CardContent>
     </Card>
   );

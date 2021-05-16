@@ -22,7 +22,7 @@ export default function Navbar() {
   const classes = useStyles();
   return (
     <Fragment>
-      <AppBar color="default">
+      <AppBar color="primary" variant="outlined" position="static">
         <Toolbar>
           <IconButton
             edge="start"

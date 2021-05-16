@@ -1,9 +1,10 @@
-import { Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import { useRouter } from "next/router";
 import ServiceCard from "../../components/Services/ServiceCard";
 import axios from "axios";
 import CategoryDetail from "../../components/Category/CategoryDetail";
 import useSWR from "swr";
+import { Fragment } from "react";
 
 export default function SingleCategory({ services, category }) {
   const router = useRouter();
@@ -24,19 +25,25 @@ export default function SingleCategory({ services, category }) {
   if (categoryError) return <div>Category Error</div>;
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={12} md={6}>
-        <CategoryDetail category={categoryData.data.category} />
+    <Fragment>
+      <Grid container justify="center">
+        <Grid item xs={12} md={8}>
+          <Box marginBottom="30px">
+            <CategoryDetail category={categoryData.data.category} />
+          </Box>
+        </Grid>
       </Grid>
 
-      <Grid item xs={12} md={6}>
-        {serviceData.data.services.map((service) => (
-          <Grid item xs={12} key={service._id}>
-            <ServiceCard service={service} />
-          </Grid>
-        ))}
+      <Grid container justify="center">
+        <Grid item container spacing={2} xs={12} md={8}>
+          {serviceData.data.services.map((service) => (
+            <Grid item xs={12} md={4} key={service._id}>
+              <ServiceCard service={service} />
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
-    </Grid>
+    </Fragment>
   );
 }
 

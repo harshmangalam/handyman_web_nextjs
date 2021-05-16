@@ -15,7 +15,7 @@ export default function CategoryCard({ category }) {
       <Paper className={classes.paper}>
         <Avatar src={category.image} className={classes.avatar} />
         <div>
-          <Typography variant="h5">{category.name}</Typography>
+          <Typography style={{marginTop:"16px"}} variant="h5">{category.name}</Typography>
         </div>
       </Paper>
     </Link>
@@ -33,8 +33,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     transition: "0.6s all",
     "&:hover": {
-      background: colors.blue[700],
+      background: colors.blue[500],
       transform: "translateY(16px) scale(1.02)",
+      color:"white"
     },
   },
 

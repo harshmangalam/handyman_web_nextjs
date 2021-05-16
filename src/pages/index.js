@@ -1,16 +1,10 @@
 import Head from "next/head";
 import { Grid, Typography } from "@material-ui/core";
 import CategoryCard from "../components/Category/CategoryCard";
-import CategoryCardLoading from "../components/Category/CategoryCardLoading";
-import useSWR from "swr";
 import ImageSlider from "../components/ImageSlider";
-export default function Home() {
-  const { data: categoryData, error: categoryErr } = useSWR("/category");
+import axios from "axios";
 
-  if (categoryErr) {
-    return <div>Error.</div>;
-  }
-
+export default function Home({ categories }) {
   return (
     <div>
       <Head>
@@ -23,23 +17,36 @@ export default function Home() {
         <section>
           <ImageSlider />
         </section>
-        <section style={{marginTop:"36px"}}>
+        <section style={{ marginTop: "36px" }}>
           <Typography variant="h4">Categories</Typography>
-          <Grid container alignItems="center" spacing={3} style={{marginTop:"16px"}}>
-            {!categoryData
-              ? [...new Array(4)].map((i) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-                    <CategoryCardLoading />
-                  </Grid>
-                ))
-              : categoryData.data.categories.map((category) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={category._id}>
-                    <CategoryCard category={category} />
-                  </Grid>
-                ))}
+          <Grid
+            container
+            alignItems="center"
+            spacing={3}
+            style={{ marginTop: "16px" }}
+          >
+            {categories.map((category) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={category._id}>
+                <CategoryCard category={category} />
+              </Grid>
+            ))}
           </Grid>
         </section>
       </div>
     </div>
   );
 }
+
+export const getServerSideProps = async () => {
+  try {
+    const res = await axios.get("/category?limit=4");
+
+    return {
+      props: {
+        categories: res.data.data.categories,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};

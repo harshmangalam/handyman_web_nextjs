@@ -1,30 +1,29 @@
 import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
   makeStyles,
-  CardActionArea,
-  Chip,
   Paper,
   Avatar,
-  Button,
+  Typography,
+  Box,
   colors,
+  Chip,
 } from "@material-ui/core";
 import Link from "next/link";
-
-import { useRouter } from "next/router";
 export default function ServiceCard({ service }) {
-  const router = useRouter();
   const classes = useStyles();
+
   return (
     <Link href={`/service/${service._id}`} passHref>
-      <Paper className={classes.root}>
+      <Paper className={classes.paper}>
         <Avatar src={service.image} className={classes.avatar} />
         <div>
           <Typography variant="h5">{service.name}</Typography>
-          <Typography variant="body1" style={{margin:"12px 0px"}}>{service.description}</Typography>
-          <Typography variant="h6">{service.price}</Typography>
+          <Chip
+            variant="default"
+            color="secondary"
+            size="medium"
+            style={{ marginTop: "16px" }}
+            label={`$ ${service.price} ${service.currency}`}
+          />
         </div>
       </Paper>
     </Link>
@@ -32,33 +31,25 @@ export default function ServiceCard({ service }) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  avatar: {
-    width: "120px",
-    height: "120px",
-    marginRight: 0,
-    [theme.breakpoints.up("md")]: {
-      marginRight: theme.spacing(4),
+  paper: {
+    padding: "16px",
+    cursor: "pointer",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    width: "100%",
+    transition: "0.6s all",
+
+    "&:hover": {
+      background: colors.blue[500],
+      transform: "translateY(16px) scale(1.02)",
+      color:"white"
     },
   },
 
-  root: {
-    width: "100%",
-    padding: "24px",
-    display: "flex",
-    flexDirection: "column",
-    margin: theme.spacing(4, 0),
-    cursor: "pointer",
-    transition: "0.6s all",
-    textAlign: "center",
-    "&:first-child": {
-      marginTop: "0px",
-    },
-    "&:hover": {
-      backgroundColor: colors.pink["600"],
-    },
-    [theme.breakpoints.up("md")]: {
-      flexDirection: "row",
-      textAlign: "start",
-    },
+  avatar: {
+    width: "150px",
+    height: "150px",
   },
 }));

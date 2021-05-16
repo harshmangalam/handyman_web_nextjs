@@ -14,7 +14,7 @@ import { SWRConfig } from "swr";
 import { AuthProvider } from "../context/auth";
 import { UIProvider } from "../context/ui";
 import SnackbarAlert from "../components/SnackbarAlert";
-import { Container, makeStyles } from "@material-ui/core";
+import { colors, Container, makeStyles } from "@material-ui/core";
 
 Axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/api";
 Axios.defaults.withCredentials = true;
@@ -31,7 +31,7 @@ const fetcher = async (url) => {
 const useStyles = makeStyles((theme) => ({
   main: {
     flex: 1,
-    padding: "80px 0px",
+    padding: "16px 0px",
   },
 }));
 
@@ -65,6 +65,7 @@ export default function App(props) {
                   flexDirection: "column",
                   justifyContent: "space-between",
                   minHeight: "100vh",
+                  backgroundColor:colors.grey[200]
                 }}
               >
                 <nav>
@@ -72,7 +73,7 @@ export default function App(props) {
                 </nav>
 
                 <main className={classes.main}>
-                  <Container maxWidth="xl">
+                  <Container>
                     <Component {...pageProps} />
                   </Container>
                 </main>

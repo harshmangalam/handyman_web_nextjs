@@ -5,6 +5,8 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
+  ListSubheader,
+  LinearProgress,
 } from "@material-ui/core";
 import {
   Settings as SettingsIcon,
@@ -16,14 +18,17 @@ import {
   Add,
 } from "@material-ui/icons";
 
+import useSWR from "swr";
 import { useAuthState } from "../../context/auth";
 import AvatarProfile from "../Profile/AvatartProfile";
 import SidebarList from "./SidebarList";
 import ContactLists from "./ContactLists";
 import { BiLogIn } from "react-icons/bi";
+import Link from "next/link";
 
 export default function Sidebar({ open, setOpen }) {
   const { isAuthenticated, user } = useAuthState();
+  const { data: pages, error: pageError } = useSWR("/page/page_slug");
   const list = (
     <div>
       {isAuthenticated && (
@@ -53,7 +58,19 @@ export default function Sidebar({ open, setOpen }) {
 
       <SidebarList lists={exploreLinks} heading="Explore" />
       <Divider />
-      <SidebarList lists={pages} heading="Pages" />
+      {pages ? (
+        <List subheader={<ListSubheader>Pages</ListSubheader>}>
+          {pages.data.pages.map((page) => (
+            <Link href={`/page/${page.slug}`} key={page._id} passHref>
+              <ListItem button>
+                <ListItemText primary={page.title} />
+              </ListItem>
+            </Link>
+          ))}
+        </List>
+      ) : (
+        <LinearProgress />
+      )}
       <Divider />
       <ContactLists />
     </div>
@@ -88,13 +105,9 @@ const taskerLinks = [
     icon: <DashboardTwoTone />,
   },
 ];
-const pages = [
-  { name: "Home", href: "/" },
-  { name: "About Us", href: "/pages/aboutUs" },
-  { name: "Contact Us", href: "/pages/contactUs" },
-];
+
 
 const exploreLinks = [
-  { name: "Explore Services", href: "/services", icon: <ExploreOutlined /> },
+  { name: "Explore Services", href: "/service", icon: <ExploreOutlined /> },
   { name: "Explore Categories", href: "/category", icon: <ExploreOutlined /> },
 ];
