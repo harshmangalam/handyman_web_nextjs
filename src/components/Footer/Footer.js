@@ -10,16 +10,21 @@ import {
   Button,
   Fab,
 } from "@material-ui/core";
+import Link from "next/link";
 import {
   Facebook as FacebookIcon,
   Instagram as InstagramIcon,
   Twitter as TwitterIcon,
   LinkedIn as LinkedInIcon,
+  PagesSharp,
 } from "@material-ui/icons";
 import { Fragment } from "react";
 
+import useSWR from "swr";
 export default function Footer() {
   const theme = useTheme();
+  const { data: pages } = useSWR("/page/page_slug");
+  const { data: categories } = useSWR("/category/fetch_name");
   return (
     <Fragment>
       <Box
@@ -30,33 +35,35 @@ export default function Footer() {
       >
         <Container>
           <Grid container spacing={3} justify="center">
-            {companyLinks.map((link) => (
-              <Grid item>
-                <Button variant="text" style={{ color: "white" }}>
-                  {link}
-                </Button>
-              </Grid>
-            ))}
+            {pages ? (
+              pages.data.pages.map((page) => (
+                <Grid item>
+                  <Link href={`/page/${page.slug}`} passHref>
+                    <Button variant="text" style={{ color: "white" }}>
+                      {page.title}
+                    </Button>
+                  </Link>
+                </Grid>
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
           </Grid>
 
           <Grid container spacing={3} justify="center">
-            {categoryLinks.map((link) => (
-              <Grid item>
-                <Button variant="text" style={{ color: "white" }}>
-                  {link}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
-
-          <Grid container spacing={3} justify="center">
-            {serviceLinks.map((link) => (
-              <Grid item>
-                <Button variant="text" style={{ color: "white" }}>
-                  {link}
-                </Button>
-              </Grid>
-            ))}
+            {categories ? (
+              categories.data.categories.map((cat) => (
+                <Grid item>
+                  <Link href={`/category/${cat._id}`} passHref>
+                    <Button variant="text" style={{ color: "white" }}>
+                      {cat.name}
+                    </Button>
+                  </Link>
+                </Grid>
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
           </Grid>
         </Container>
       </Box>
@@ -83,10 +90,6 @@ export default function Footer() {
     </Fragment>
   );
 }
-
-const serviceLinks = Array.from(Array(6).keys()).map((i) => `Service ${i}`);
-
-const companyLinks = Array.from(Array(4).keys()).map((i) => `Page ${i}`);
 
 const categoryLinks = Array.from(Array(4).keys()).map((i) => `Category ${i}`);
 

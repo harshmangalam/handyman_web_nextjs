@@ -7,10 +7,9 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { useState } from "react";
-
+import axios from "axios";
 import BookingsHistory from "../../../components/Booking/BookingsHistory";
-import CancelBookings from "../../../components/Booking/CancelBookings";
-import ConfirmBookings from "../../../components/Booking/ConfirmBookings";
+
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
@@ -27,30 +26,20 @@ export default function Dashboard() {
   };
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={2}>
+      <Grid item xs={12}>
         <Tabs
-          orientation={isMobile ? "horizontal" : "vertical"}
+          orientation="horizontal"
           variant="scrollable"
           value={value}
           onChange={handleChange}
           aria-label="Vertical tabs example"
         >
           <Tab label="Bookings History" {...a11yProps(0)} />
-          <Tab label="Confirm Bookings" {...a11yProps(1)} />
-          <Tab label="Cancel Bookings" {...a11yProps(2)} />
         </Tabs>
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <TabPanel value={value} index={0}>
           <BookingsHistory />
-        </TabPanel>
-
-        <TabPanel value={value} index={1}>
-          <ConfirmBookings />
-        </TabPanel>
-
-        <TabPanel value={value} index={2}>
-          <CancelBookings />
         </TabPanel>
       </Grid>
     </Grid>
@@ -72,3 +61,21 @@ function TabPanel(props) {
     </div>
   );
 }
+
+export const getServerSideProps = async ({ req, res }) => {
+  try {
+    const cookie = req.headers.cookie;
+    if (!cookie) throw new Error("Missing auth token cookie");
+
+    await axios.get("/auth/me", { headers: { cookie } });
+
+    return { props: {} };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+};

@@ -6,6 +6,7 @@ import {
   OutlinedInput,
   Button,
   Typography,
+  Fab,
 } from "@material-ui/core";
 
 import Visibility from "@material-ui/icons/Visibility";
@@ -142,12 +143,11 @@ export default function Login() {
           <Grid xs={12} item>
             <Link href="/auth/send_otp" passHref>
               <a
-                style={{color:"white"}}
                 onClick={() =>
                   localStorage.setItem("otpType", "reset_password")
                 }
               >
-                Forgot Password ?{" "}
+                Forgot Password ?
               </a>
             </Link>
           </Grid>
@@ -164,21 +164,13 @@ export default function Login() {
           </Grid>
 
           <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12} md={6}>
-                <PhoneLoginDialog />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  startIcon={<FacebookIcon />}
-                >
-                  Facebook Login
-                </Button>
-              </Grid>
-            </Grid>
+            <PhoneLoginDialog />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Button fullWidth icon={FacebookIcon} variant="contained">
+              Login With Facebook
+            </Button>
           </Grid>
         </Grid>
       </form>

@@ -1,4 +1,15 @@
-import { Button, TextField, Grid, Paper, Typography } from "@material-ui/core";
+import {
+  Button,
+  TextField,
+  Grid,
+  Paper,
+  Typography,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@material-ui/core";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -9,6 +20,8 @@ import ClockField from "../../../components/ClockField";
 import DateField from "../../../components/DateField";
 import { useUIDispatch } from "../../../context/ui";
 import { useRouter } from "next/router";
+import CountryField from "../../../components/CountryField";
+import StateField from "../../../components/StateField";
 
 let initialValues = {
   address: "",
@@ -17,12 +30,20 @@ let initialValues = {
   date: "",
   time: "",
   city: "",
+  postalCode: "",
+  state: "",
+  country: "",
+  paymentMode: "",
 };
 
 const validationSchema = Yup.object().shape({
   address: Yup.string().required("Booking address must not be empty"),
   taskLength: Yup.number().required("Provide how long is your task"),
   city: Yup.string().required("City must not be empty"),
+  postalCode: Yup.string().required("Postal Code code must not be empty"),
+  paymentMode: Yup.string().required("Select  mode of payment"),
+  state: Yup.string().required("Select  your state"),
+  country: Yup.string().required("Select  your country"),
 });
 
 export default function Booking() {
@@ -60,7 +81,11 @@ export default function Booking() {
           msg: res.data.message,
           type: res.data.type,
         });
-        router.push("/account/bookings");
+        if (values.paymentMode === "COD") {
+          router.push("/account/bookings");
+        } else {
+          router.push(`/booking/${res.data.data.bookingId}/payment`);
+        }
       } catch (error) {
         if (error.response.data) {
           uiDispatch("SNACKBAR", {
@@ -97,6 +122,40 @@ export default function Booking() {
               </Grid>
 
               <Grid item xs={12}>
+                <CountryField
+                  name="country"
+                  value={values.country}
+                  handleChange={handleChange}
+                  error={Boolean(errors?.country)}
+                />
+                <Typography color="error">{errors?.country}</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <StateField
+                  name="state"
+                  value={values.state}
+                  handleChange={handleChange}
+                  error={Boolean(errors?.state)}
+                />
+                <Typography color="error">{errors?.state}</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  name="postalCode"
+                  value={values.postalCode}
+                  onChange={handleChange}
+                  label="Postal Code"
+                  variant="outlined"
+                  required
+                  error={Boolean(errors?.postalCode)}
+                />
+                <Typography color="error">{errors?.postalCode}</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
                 <TextField
                   multiline
                   rows={5}
@@ -118,7 +177,7 @@ export default function Booking() {
                   name="taskLength"
                   value={values.taskLength}
                   onChange={handleChange}
-                  label="How long is your task"
+                  label="How long is your task (in hour)"
                   variant="outlined"
                   inputProps={{ min: 1 }}
                   required
@@ -134,6 +193,33 @@ export default function Booking() {
                 <Grid item xs={12} md={6}>
                   <ClockField label="Task Time" setTime={setTime} time={time} />
                 </Grid>
+              </Grid>
+
+              <Grid item>
+                <FormControl
+                  component="fieldset"
+                  error={Boolean(errors.paymentMode)}
+                >
+                  <FormLabel component="legend">Payment Mode</FormLabel>
+                  <RadioGroup
+                    aria-label="payment_mode"
+                    name="paymentMode"
+                    value={values.paymentMode}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="COD"
+                      control={<Radio />}
+                      label="Cash After Work"
+                    />
+                    <FormControlLabel
+                      value="ONLINE_PAYMENT"
+                      control={<Radio />}
+                      label="Pay Online"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <Typography color="error">{errors?.paymentMode}</Typography>
               </Grid>
 
               <Grid item xs={12}>
@@ -156,7 +242,7 @@ export default function Booking() {
                   size="large"
                   disabled={isSubmitting}
                 >
-                  Proceed to checkout
+                  Proceed
                 </Button>
               </Grid>
             </Grid>

@@ -15,16 +15,20 @@ export default function SingleService({ service }) {
           <img src={service.image} className={classes.image} />
 
           <div className={classes.content}>
-            <Typography variant="h4">
-                {service.name}
+            <Typography variant="h4">{service.name}</Typography>
+
+            <Typography style={{ marginTop: "16px", textAlign: "justify" }}>
+              {service.description}
             </Typography>
 
-            <Typography style={{marginTop:"16px",textAlign:"justify"}}>
-                {service.description}
-            </Typography>
-
-            <Button onClick={()=>router.push(`/service/${service}/booking`)} style={{marginTop:"24px"}} variant="contained" size="large" color="primary">
-              Book Now
+            <Button
+              onClick={() => router.push(`/service/${service._id}/booking`)}
+              style={{ marginTop: "24px" }}
+              variant="contained"
+              size="large"
+              color="primary"
+            >
+              {service.currency}${service.price} Book Now
             </Button>
           </div>
         </Paper>
@@ -43,10 +47,10 @@ const useStyles = makeStyles((t) => ({
     height: "300px",
   },
 
-  content:{
-    margin:"16px 0px",
-    textAlign:"center",
-  }
+  content: {
+    margin: "16px 0px",
+    textAlign: "center",
+  },
 }));
 
 export async function getServerSideProps(context) {

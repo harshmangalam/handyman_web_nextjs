@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
-
+import { useRouter } from "next/router";
 const initialState = {
   isAuthenticated: false,
   token: "",
@@ -37,6 +37,8 @@ const reducer = (state, { type, payload }) => {
 
 export const AuthProvider = ({ children }) => {
   const [state, defaultDispatch] = useReducer(reducer, initialState);
+
+  const router = useRouter();
 
   const dispatch = (type, payload) => defaultDispatch({ type, payload });
 

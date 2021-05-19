@@ -28,6 +28,7 @@ export default function UserProfile() {
       setAnchorEl(null);
       await axios.get("/auth/logout");
       authDispatch("LOGOUT");
+      window.location.reload()
     } catch (error) {
       console.log(error);
     }

@@ -42,9 +42,8 @@ const useStyles = makeStyles((theme) => ({
     transition: "0.6s all",
 
     "&:hover": {
-      background: colors.blue[500],
-      transform: "translateY(16px) scale(1.02)",
-      color:"white"
+      background: colors.purple[400],
+      transform: "translateY(6px) scale(1.02) rotateZ(-2deg)",
     },
   },
 
