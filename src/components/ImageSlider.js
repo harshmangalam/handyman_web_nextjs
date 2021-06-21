@@ -3,7 +3,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import { Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 

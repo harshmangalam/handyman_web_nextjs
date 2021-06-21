@@ -1,8 +1,9 @@
 import Head from "next/head";
-import { Grid, Typography } from "@material-ui/core";
+import { Box, colors, Grid, Typography } from "@material-ui/core";
 import CategoryCard from "../components/Category/CategoryCard";
 import ImageSlider from "../components/ImageSlider";
 import axios from "axios";
+import HowItWork from "../components/static/HowItWork";
 
 export default function Home({ categories }) {
   return (
@@ -14,8 +15,13 @@ export default function Home({ categories }) {
 
       <div>
         {/* category list  */}
+
         <section>
           <ImageSlider />
+        </section>
+
+        <section>
+          <HowItWork />
         </section>
         <section style={{ marginTop: "36px" }}>
           <Typography variant="h4">Categories</Typography>

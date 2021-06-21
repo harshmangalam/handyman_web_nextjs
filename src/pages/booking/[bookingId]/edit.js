@@ -22,34 +22,32 @@ import { useRouter } from "next/router";
 import CountryField from "../../../components/CountryField";
 import CityField from "../../../components/CityField";
 
-let initialValues = {
-  address: "",
-  taskLength: 0,
-  instructions: "",
-  date: "",
-  time: "",
-  city: "",
-  postalCode: "",
-  country: "",
-  paymentMode: "",
-};
-
 const validationSchema = Yup.object().shape({
   address: Yup.string().required("Booking address must not be empty"),
   taskLength: Yup.number().required("Provide how long is your task"),
   city: Yup.string().required("City must not be empty"),
   postalCode: Yup.string().required("Postal Code code must not be empty"),
-  paymentMode: Yup.string().required("Select  mode of payment"),
   country: Yup.string().required("Select  your country"),
 });
 
-export default function Booking() {
+function Edit({ booking }) {
   const router = useRouter();
   const { serviceId } = router.query;
 
   const [time, setTime] = useState(new Date());
   const [date, setDate] = useState(new Date());
   const uiDispatch = useUIDispatch();
+
+  let initialValues = {
+    address: booking.address,
+    taskLength: booking.taskLength,
+    instructions: booking.instructions,
+    date: booking.date,
+    time: booking.time,
+    city: booking.city,
+    postalCode: booking.postalCode,
+    country: booking.country,
+  };
 
   const {
     handleChange,
@@ -72,17 +70,14 @@ export default function Booking() {
 
       try {
         setSubmitting(true);
-        const res = await axios.post("/booking", values);
+        const res = await axios.put(`/booking/${booking._id}`, values);
         uiDispatch("SNACKBAR", {
           open: true,
           msg: res.data.message,
           type: res.data.type,
         });
-        if (values.paymentMode === "COD") {
-          router.push("/account/bookings");
-        } else {
-          router.push(`/booking/${res.data.data.bookingId}/payment`);
-        }
+       
+        router.push("/account/bookings")
       } catch (error) {
         if (error.response.data) {
           uiDispatch("SNACKBAR", {
@@ -178,32 +173,7 @@ export default function Booking() {
                 </Grid>
               </Grid>
 
-              <Grid item>
-                <FormControl
-                  component="fieldset"
-                  error={Boolean(errors.paymentMode)}
-                >
-                  <FormLabel component="legend">Payment Mode</FormLabel>
-                  <RadioGroup
-                    aria-label="payment_mode"
-                    name="paymentMode"
-                    value={values.paymentMode}
-                    onChange={handleChange}
-                  >
-                    <FormControlLabel
-                      value="COD"
-                      control={<Radio />}
-                      label="Cash After Work"
-                    />
-                    <FormControlLabel
-                      value="ONLINE_PAYMENT"
-                      control={<Radio />}
-                      label="Pay Online"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <Typography color="error">{errors?.paymentMode}</Typography>
-              </Grid>
+             
 
               <Grid item xs={12}>
                 <TextField
@@ -225,7 +195,7 @@ export default function Booking() {
                   size="large"
                   disabled={isSubmitting}
                 >
-                  Proceed
+                  Edit
                 </Button>
               </Grid>
             </Grid>
@@ -236,22 +206,19 @@ export default function Booking() {
   );
 }
 
-export const getServerSideProps = async ({ req, res }) => {
+export const getServerSideProps = async ({ query }) => {
+  const bookingId = query.bookingId;
+
   try {
-    const cookie = req.headers.cookie;
-    if (!cookie) throw new Error("Missing auth token cookie");
-
-    const res = await axios.get("/auth/me", { headers: { cookie } });
+    const booking = await axios.get(`/booking/${bookingId}`);
 
     return {
-      props: {},
-    };
-  } catch (err) {
-    return {
-      redirect: {
-        destination: "/auth/login",
-        permanent: false,
+      props: {
+        booking:booking.data.data.booking,
       },
     };
+  } catch (error) {
+    console.log(error);
   }
 };
+export default Edit;

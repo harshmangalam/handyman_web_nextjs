@@ -41,7 +41,7 @@ export default function UserProfile() {
           onClick={handleOpen}
           style={{ cursor: "pointer" }}
           alt={user.name}
-          src="https://material-ui.com/static/images/avatar/1.jpg"
+          src={user.profilePic}
         />
       </Tooltip>
       <Menu

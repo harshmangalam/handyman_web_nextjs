@@ -1,6 +1,8 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import useSWR from "swr";
 
-function StateField({ name, value, handleChange, error }) {
+function CityField({ name, value, handleChange, error }) {
+  const { data } = useSWR("/region");
   return (
     <div>
       <FormControl variant="outlined" fullWidth error={error}>
@@ -17,12 +19,15 @@ function StateField({ name, value, handleChange, error }) {
             <em>None</em>
           </MenuItem>
 
-          <MenuItem value="Washington">Washington</MenuItem>
-         
+          {data?.data.regions.map((region) => (
+            <MenuItem key={region._id} value={region.city}>
+              {region.city}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </div>
   );
 }
 
-export default StateField;
+export default CityField;

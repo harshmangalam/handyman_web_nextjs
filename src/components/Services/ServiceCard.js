@@ -14,12 +14,12 @@ export default function ServiceCard({ service }) {
   return (
     <Link href={`/service/${service._id}`} passHref>
       <Paper className={classes.paper}>
-        <Avatar src={service.image} className={classes.avatar} />
+        <Avatar variant="rounded"  src={service.image} className={classes.avatar} />
         <div>
           <Typography variant="h5">{service.name}</Typography>
           <Chip
             variant="default"
-            color="secondary"
+            color="primary"
             size="medium"
             style={{ marginTop: "16px" }}
             label={`$ ${service.price} ${service.currency}`}
@@ -39,16 +39,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     textAlign: "center",
     width: "100%",
-    transition: "0.6s all",
+    transition: "0.7s all",
 
     "&:hover": {
-      background: colors.purple[400],
-      transform: "translateY(6px) scale(1.02) rotateZ(-2deg)",
+      background: `linear-gradient(45deg, ${colors.pink[300]} 30%, ${colors.blue[400]} 70%)`,
+      transform: "scale(0.9)",
+      color: "white",
     },
   },
 
   avatar: {
-    width: "150px",
-    height: "150px",
+    width: "100%",
+    height: "200px",
   },
 }));

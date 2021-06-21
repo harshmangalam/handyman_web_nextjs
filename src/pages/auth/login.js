@@ -28,6 +28,7 @@ import * as Yup from "yup";
 import { useAuthDispatch } from "../../context/auth";
 import { useRouter } from "next/router";
 import PhoneLoginDialog from "../../components/Auth/PhoneLoginModal";
+import SocialLogin from "../../components/Auth/SocialLogin";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Email/Phone must be required"),
@@ -168,9 +169,7 @@ export default function Login() {
           </Grid>
 
           <Grid item xs={12}>
-            <Button fullWidth icon={FacebookIcon} variant="contained">
-              Login With Facebook
-            </Button>
+            <SocialLogin />
           </Grid>
         </Grid>
       </form>

@@ -115,3 +115,23 @@ const Payment = () => {
 };
 
 export default Payment;
+
+export const getServerSideProps = async ({ req, res }) => {
+  try {
+    const cookie = req.headers.cookie;
+    if (!cookie) throw new Error("Missing auth token cookie");
+
+    const res = await axios.get("/auth/me", { headers: { cookie } });
+
+    return {
+      props: {},
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+};

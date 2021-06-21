@@ -37,7 +37,6 @@ const validationSchema = Yup.object().shape({
     .required("Email must be required")
     .email("Email address must be valid email"),
   password: Yup.string().required("Password must be required"),
-  phone: Yup.string().required("Phone must be required"),
   name: Yup.string().required("Name must be required"),
   role: Yup.string().required("Role must be required"),
 });
@@ -126,7 +125,6 @@ export default function Register() {
                 placeholder="Phone Number"
                 type="tel"
                 value={values.phone}
-                error={Boolean(errors?.phone)}
                 name="phone"
                 onChange={handleChange}
                 startAdornment={
@@ -135,9 +133,7 @@ export default function Register() {
                   </InputAdornment>
                 }
               />
-              <Typography color="error">
-                {errors?.phone?.msg || errors?.phone}
-              </Typography>
+              <Typography color="error">{errors?.phone?.msg}</Typography>
             </FormControl>
           </Grid>
 

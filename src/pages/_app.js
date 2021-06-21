@@ -3,12 +3,10 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../theme";
 import Navbar from "../components/Header/Navbar";
-import { grey } from "@material-ui/core/colors";
 import Footer from "../components/Footer/Footer";
 import "../styles/global.css";
 
 import Axios from "axios";
-import { useRouter } from "next/router";
 import { SWRConfig } from "swr";
 
 import { AuthProvider } from "../context/auth";
@@ -16,6 +14,7 @@ import { UIProvider } from "../context/ui";
 import SnackbarAlert from "../components/SnackbarAlert";
 import { colors, Container, makeStyles } from "@material-ui/core";
 
+import SpeedDials from "../components/SpeedDials";
 Axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/api";
 Axios.defaults.withCredentials = true;
 
@@ -65,7 +64,7 @@ export default function App(props) {
                   flexDirection: "column",
                   justifyContent: "space-between",
                   minHeight: "100vh",
-                  backgroundColor:colors.grey[200]
+                  backgroundColor: colors.grey[200],
                 }}
               >
                 <nav>
@@ -73,8 +72,9 @@ export default function App(props) {
                 </nav>
 
                 <main className={classes.main}>
-                  <Container>
+                  <Container maxWidth="xl">
                     <Component {...pageProps} />
+                    <SpeedDials />
                   </Container>
                 </main>
 

@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
 const initialState = {
   isAuthenticated: false,
-  token: "",
   user: null,
   isLoading: false,
 };
@@ -28,7 +27,7 @@ const reducer = (state, { type, payload }) => {
       };
 
     case "LOGOUT":
-      return { ...state, isAuthenticated: false, user: null, token: "" };
+      return { ...state, isAuthenticated: false, user: null };
 
     default:
       throw new Error(`Unknow action type: ${type}`);

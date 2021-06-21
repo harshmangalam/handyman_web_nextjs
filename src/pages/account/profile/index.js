@@ -2,17 +2,18 @@ import axios from "axios";
 import {
   Avatar,
   Button,
-  CardActions,
-  CardContent,
   Paper,
   Grid,
   Typography,
   Box,
   Chip,
 } from "@material-ui/core";
+
+import { useRouter } from "next/router";
 import { FaEdit } from "react-icons/fa";
-import { AiOutlineBlock, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 export default function Profile({ user, bookings }) {
+  const router = useRouter();
   return (
     <Grid container alignItems="center" justify="center">
       <Grid item xs={12} sm={12} md={6}>
@@ -109,6 +110,7 @@ export default function Profile({ user, bookings }) {
                 variant="contained"
                 color="primary"
                 startIcon={<FaEdit fontSize="20px" />}
+                onClick={() => router.push("/account/profile/edit")}
               >
                 Edit Profile
               </Button>
